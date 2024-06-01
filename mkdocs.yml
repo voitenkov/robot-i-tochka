@@ -1,0 +1,42 @@
+# Project information
+site_name: RobotITochka
+
+# Repository
+repo_name: voitenkov/robot-i-tochka
+repo_url: https://github.com/voitenkov/robot-i-tochka
+
+theme:
+  custom_dir: 'theme'
+  name: material
+  palette:
+      # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  language: ru
+  features:
+    - navigation.instant # Мгновенная загрузка
+    - navigation.tracking # Когда отслеживание привязки включено, URL-адрес в адресной строке автоматически обновляется активным привязкой, как выделено в оглавлении. 
+    - navigation.expand # Автоматическое открытие подразделов на панели слева
+    - navigation.path # Над заголовком каждой страницы отображается путь
+    - navigation.top # Кнопка «назад-вверх»
+    - navigation.footer # Переключение кнопками предыдущей/следующей страницы в футере
+    - navigation.tabs # Навигационные вкладки
+    # - navigation.sections # Отображение верхних вкладок на панели слева
+    - navigation.indexes # Скрыть дублирование заголовка на панели слева.
+    - toc.integrate # Интеграция подразделов в панель слева
+    - toc.follow # Автоматическая прокрутка боковой панели при прокрутке
+    - search.highlight # Подсветка вхождений в тексте
+    - search.suggest # Автозавершение поискового запроса
+    - content.code.copy # Кнопка копирования кода
