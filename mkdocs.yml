@@ -41,3 +41,17 @@ theme:
     - search.suggest # Автозавершение поискового запроса
     - content.code.copy # Кнопка копирования кода
     
+nav:
+  - Домашняя страница:
+    - index.md
+  - Документация:
+    - glossary.md
+    - general info.md
+    - goals.md
+    - characteristics.md
+    - business process.md
+    - requirements.md
+    - model.md
+    - architecture.md
+    - uiux.md
+    - api.md
