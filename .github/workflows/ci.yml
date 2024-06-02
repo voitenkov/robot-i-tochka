@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
@@ -28,9 +25,5 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-glightbox
-      - run: pip install mkdocs-swagger-ui-tag
-      - run: pip3 install mkdocs-build-plantuml-plugin
-      - run: pip3 install mkdocs-enumerate-headings-plugin
       - run: pip install mkdocs-material 
       - run: mkdocs gh-deploy --force
