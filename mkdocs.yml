@@ -6,7 +6,7 @@ repo_name: voitenkov/robot-i-tochka
 repo_url: https://github.com/voitenkov/robot-i-tochka
 
 theme:
-  # custom_dir: 'theme'
+  custom_dir: 'theme'
   name: material
   palette:
    # Palette toggle for dark mode
