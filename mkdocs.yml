@@ -40,3 +40,78 @@ theme:
     - search.highlight # Подсветка вхождений в тексте
     - search.suggest # Автозавершение поискового запроса
     - content.code.copy # Кнопка копирования кода
+    
+markdown_extensions:
+  # - lightgallery
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      toc_depth: 3
+      permalink: true
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      auto_append: 
+      - docs/abbreviations.md
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  # - swagger-ui-tag
+  # - build_plantuml:
+  #     render: 'server' # or "local" for local rendering
+  #     bin_path: '/usr/local/bin/plantuml' # ignored when render: server
+  #     server: 'http://www.plantuml.com/plantuml' # official plantuml server
+  #     disable_ssl_certificate_validation: true # for self-signed and invalid certs
+  #     output_format: 'svg' # or "png"
+  #     diagram_root: 'docs/diagrams' # should reside under docs_dir
+  #     output_folder: 'out'
+  #     input_folder: 'src'
+  #     input_extensions: '' # comma separated list of extensions to parse, by default every file is parsed
+  # - enumerate-headings:
+  #     exclude:
+  #       - index.md
+  #       - glossary.md
+  # # - print-site:
+  # #     path_to_pdf: "assets/test.pdf"
+  # - glightbox
+
+nav:
+  - Домашняя страница:
+    - index.md
+  - Документация:
+    - glossary.md
+    - general info.md
+    - goals.md
+    - characteristics.md
+    - business process.md
+    - requirements.md
+    - model.md
+    - architecture.md
+    - uiux.md
+    - api.md
