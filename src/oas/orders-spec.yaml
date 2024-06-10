@@ -1,0 +1,626 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Робот и точка API
+  description: API для заказа блюд через приложение (Orders service)
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Технические методы
+      summary: Аутентификация пользователя
+      description: Позволяет пользователю войти в систему, используя логин и пароль.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: Имя пользователя
+                password:
+                  type: string
+                  format: password
+                  description: Пароль пользователя
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    format: JWT
+                    description: Токен доступа
+                    example: >-
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkhhcnJ5IFBvdHRlciIsImlhdCI6MTUxNjIzOTAyMn0.Jkr1iBrO9-cr7uZRYhvE8BuSXIfuPnQWuZBNBE60t14
+        '401':
+          description: Неверные учетные данные
+        '500':
+          description: Внутренняя ошибка сервера
+  /orders:
+    post:
+      tags:
+        - Управление заказами
+      security:
+        - bearerAuth: []          
+      summary: Создание нового заказа
+      description: Создает заказ клиента.
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Заказ успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderResponse'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /orders/{orderID}:
+    get:
+      tags:
+        - Управление заказами
+      security:
+        - bearerAuth: []          
+      summary: Получение заказа
+      description: Выводит заказ клиента.
+      operationId: getOrderByID
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: Уникальный идентификатор заказа
+          schema:
+            type: string
+            format: uuid         
+      responses:
+        '200':
+          description: Свойства заказа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+
+    delete:
+      tags:
+        - Управление заказами
+      security:
+        - bearerAuth: []          
+      summary: Удаление заказа
+      description: Удаляет заказ клиента.
+      operationId: deleteOrder
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: Уникальный идентификатор заказа
+          schema:
+            type: string
+            format: uuid    
+      responses:
+        '204':
+          description: Заказ удален
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /orders/{orderID}/status:
+    get:
+      tags: 
+        - Управление заказами
+      security:
+        - bearerAuth: []
+      summary: Просмотр статуса заказа
+      description: Возвращает текущий статус указанного заказа.
+      operationId: getOrderStatus
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: Уникальный идентификатор заказа
+          schema:
+            type: string
+            format: uuid            
+      responses:
+        '200':
+          description: Текущий статус заказа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Статус заказа
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера                    
+
+  /clients:
+    post:
+      tags:
+      - Управление клиентами
+      summary: Регистрация нового клиента
+      description: Создает нового клиента.
+      security: []
+      operationId: createClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientRequest'
+        required: true
+      responses:
+        '201':
+          description: Клиент успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: Ошибка в запросе
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /clients/{clientID}:
+    get:
+      tags:
+      - Управление клиентами
+      summary: Получение информации о клиенте
+      description: Выводит информацию о клиенте.
+      operationId: getClientByID
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          description: Уникальный идентификатор клиента
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Информация о клиенте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера'
+    put:
+      tags: 
+      - Управление клиентами
+      summary: Изменение информации о клиенте
+      description: Изменяет информацию о клиенте.
+      operationId: updateClient
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          description: Уникальный идентификатор клиента
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Информация о клинте изменена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+    delete:
+      tags:
+      - Управление клиентами
+      summary: Удаление клиента
+      description: Удаляет клиента.
+      operationId: deleteClient
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          description: Уникальный идентификатор клиента
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Клиент удален
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера'
+
+  /clients/{clientID}/orders:
+    get:
+      tags: 
+        - Управление клиентами
+      security:
+        - bearerAuth: []
+      summary: Просмотр истории заказов
+      description: Возвращает историю заказов текущего клиента.
+      parameters:
+        - name: clientID
+          in: path
+          required: true
+          description: Уникальный идентификатор клиента
+          schema:
+            type: string
+            format: uuid  
+      responses:
+        '200':
+          description: История заказов клиента
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера                   
+  /payments:
+    post:
+      tags:
+        - Оплата заказа
+      security:
+        - bearerAuth: []          
+      summary: Оплата заказа
+      description: Производит оплату.
+      operationId: createPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+      responses:
+        '201':
+          description: Оплата успешно произведена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+  
+  /payments/{paymentID}/return:
+    post:
+      tags:
+        - Оплата заказа
+      security:
+        - bearerAuth: []          
+      summary: Возврат оплаты
+      description: Оформляет возврат оплаты заказа.
+      operationId: createPaymentReturn
+      parameters:
+        - name: paymentID
+          in: path
+          required: true
+          description: Уникальный идентификатор платежа
+          schema:
+            type: string
+            format: uuid    
+      responses:
+        '201':
+          description: Возврат оплаты успешно оформлен
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Возврат уже оформлен
+        '500':
+          description: Внутренняя ошибка сервера
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CreateOrderRequest:
+      type: object
+      required:
+        - clientID
+        - orderItem
+        - complectation
+      properties:
+        clientID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор клиента
+        orderItems:
+          type: array
+          description: Позиция заказа
+          items:
+            type: object
+            properties:
+              itemType:
+                type: string
+                description: Тип товара
+                enum:
+                  - простой
+                  - комбо
+                  - кастомный
+              itemID:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор блюда
+              quantity:
+                type: integer
+                description: Количество добавляемых блюд
+              price:
+                type: number
+                format: float
+                description: Цена блюда
+        complectation:          
+          type: string
+          description: Способ комплектации заказа
+          enum: 
+            - "в зале"
+            - "на вынос"
+        appliedActions:
+          type: array
+          description: Примененные акционные предложения
+          items:
+            type: object
+            properties:
+              actionId:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор акционного преложения
+        usedBonuses:
+          type: integer
+          description: Использованные бонусы (>0 - начислить, <0 - списать)
+        payments:
+          type: array
+          description: Способы оплаты
+          items:
+            type: object
+            properties:
+              paymentId:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор произведенной оплаты
+
+    CreateOrderResponse:
+      type: object
+      properties:
+        orderID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор заказа
+        orderTime:
+          type: string
+          format: date-time
+          description: Время заказа
+        clientId:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор клиента
+
+    Order:
+      type: object
+      properties:
+        orderID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор заказа
+        orderTime:
+          type: string
+          format: date-time
+          description: Дата и время создания заказа
+        clientID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор клиента
+        status:
+          type: string
+          description: Текущий статус заказа
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        totalSum:
+          type: number
+          format: float
+          description: Общая стоимость заказа
+        complectation:          
+          type: string
+          description: Способ комплектации заказа
+          enum: 
+            - "в зале"
+            - "на вынос"
+        appliedActions:
+          type: array
+          description: Примененные акционные предложения
+          items:
+            type: object
+            properties:
+              actionID:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор акционного преложения
+        usedBonuses:
+          type: integer
+          description: Использованные бонусы (>0 - начислить, <0 - списать)
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+
+    OrderItem:
+      type: object
+      properties:
+        itemID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор блюда в заказе
+        itemType:
+          type: string
+          description: Тип товара
+          enum:
+            - простой
+            - комбо
+            - кастомный
+        name:
+          type: string
+          description: Название блюда
+        quantity:
+          type: integer
+          description: Количество данного блюда в заказе
+        price:
+          type: number
+          format: float
+          description: Цена за единицу блюда
+    CreateClientRequest:
+      type: object
+      properties:
+        surname:
+          type: string
+          description: Фамилия
+        name:
+          type: string
+          description: Имя
+        patronimic:
+          type: string
+          description: Отчество       
+        phoneNumber:
+          type: string
+          description: Номер телефона
+      required:
+        - name
+        - phoneNumber
+
+    Client:
+      type: object
+      properties:
+        clientID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор клиента
+        surname:
+          type: string
+          description: Фамилия
+        name:
+          type: string
+          description: Имя
+        patronimic:
+          type: string
+          description: Отчество       
+        phoneNumber:
+          type: string
+          description: Номер телефона
+        bonuses:
+          type: integer
+          description: Остаток бонусов
+      required:
+        - clientID
+        - name
+        - phoneNumber
+    
+    CreatePaymentRequest:
+      type: object
+      properties:
+        paymentType:
+          type: string
+          description: Тип оплаты
+          enum:
+            - наличные
+            - карта
+            - бонусы
+        sum:
+          type: number
+          format: float
+          description: Сумма оплаты       
+      required:
+        - paymentTime
+        - paymentType
+        - phoneNumber
+   
+    Payment:
+      type: object
+      properties:
+        paymentID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор платежа
+        paymentTime:
+          type: string
+          format: date-time
+          description: Дата и время платежа
+        paymentType:
+          type: string
+          description: Тип оплаты
+          enum:
+            - наличные
+            - карта
+            - бонусы
+        sum:
+          type: number
+          format: float
+          description: Сумма оплаты 
+      required:
+        - paymentID
+        - paymentTime
+        - paymentType
+        - sum
+
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/VOYTENKOV/robot-i-tochka-orders-api/1.0.0
