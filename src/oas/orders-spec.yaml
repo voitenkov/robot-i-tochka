@@ -45,6 +45,117 @@ paths:
           description: Неверные учетные данные
         '500':
           description: Внутренняя ошибка сервера
+
+  /menu:
+    post:
+      tags:
+      - Управление меню
+      summary: Создание меню
+      description: Создает новое меню.
+      security: []
+      operationId: createMenu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMenuRequest'
+        required: true
+      responses:
+        '201':
+          description: Ьутг успешно создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+        '400':
+          description: Ошибка в запросе
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /menu/{menuID}:
+    get:
+      tags:
+      - Управление меню
+      summary: Получение меню
+      description: Выводит меню.
+      operationId: getMenuByID
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: Уникальный идентификатор меню
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Информация о меню
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера'
+    put:
+      tags: 
+      - Управление меню
+      summary: Изменение меню
+      description: Изменяет меню.
+      operationId: updateMenu
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: Уникальный идентификатор меню
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Menu'
+      responses:
+        '200':
+          description: Меню изменено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера
+    delete:
+      tags:
+      - Управление меню
+      summary: Удаление меню
+      description: Удаляет меню.
+      operationId: deleteMenu
+      parameters:
+        - name: menuID
+          in: path
+          required: true
+          description: Уникальный идентификатор меню
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Меню удалено
+        '400':
+          description: Ошибка в запросе
+        '401':
+          description: Пользователь не авторизован
+        '500':
+          description: Внутренняя ошибка сервера'
+
   /orders:
     post:
       tags:
@@ -375,11 +486,16 @@ components:
     CreateOrderRequest:
       type: object
       required:
+        - orderTime
         - clientID
         - orderItem
         - complectation
       properties:
-        clientID:
+        orderTime:
+          type: string
+          format: date-time
+          description: Время заказа
+        clientId:
           type: string
           format: uuid
           description: Уникальный идентификатор клиента
@@ -620,6 +736,101 @@ components:
         - paymentType
         - sum
 
+    CreateMenuRequest:
+      type: object
+      required:
+        - menuID
+        - type
+        - active
+        - menuItem
+      properties:
+        type:
+          type: string
+          description: Тип меню
+        active:
+          type: boolean
+          description: Действующее
+        activeFrom:
+          type: string
+          format: date-time
+          description: Действует с
+        activeTo:
+          type: string
+          format: date-time
+          description: Действует по
+        menuItems:
+          type: array
+          description: Позиция меню
+          items:
+            type: object
+            properties:
+              itemID:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор блюда
+              price:
+                type: number
+                format: float
+                description: Цена блюда
+
+    CreateMenuResponse:
+      type: object
+      properties:
+        menuID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор меню
+        type:
+          type: string
+          description: Тип меню
+        active:
+          type: boolean
+          description: Действующее
+        activeFrom:
+          type: string
+          format: date-time
+          description: Действует с
+        activeTo:
+          type: string
+          format: date-time
+          description: Действует по
+
+    Menu:
+      type: object
+      properties:
+        menuID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор меню
+        type:
+          type: string
+          description: Тип меню
+        active:
+          type: boolean
+          description: Действующее
+        activeFrom:
+          type: string
+          format: date-time
+          description: Действует с
+        activeTo:
+          type: string
+          format: date-time
+          description: Действует по
+        menuItems:
+          type: array
+          description: Позиция меню
+          items:
+            type: object
+            properties:
+              itemID:
+                type: string
+                format: uuid
+                description: Уникальный идентификатор блюда
+              price:
+                type: number
+                format: float
+                description: Цена блюда
+ 
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
