@@ -4,7 +4,7 @@
 
 Макет пользовательского интерфейса мобильного приложения представлен в виде вайрфреймов экранов.
 
-Кликабельный прототип доступен по ссылке https://www.figma.com/proto/EeiYHaDGD1GDfz0oWJ3OlM/%D0%A0%D0%BE%D0%B1%D0%BE%D1%82-%D0%B8-%D1%82%D0%BE%D1%87%D0%BA%D0%B0?type=design&node-id=2-2&t=1r8GOvfBGksf5gAp-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=2%3A52&mode=design
+Кликабельный прототип доступен по [ссылке](https://www.figma.com/proto/EeiYHaDGD1GDfz0oWJ3OlM/%D0%A0%D0%BE%D0%B1%D0%BE%D1%82-%D0%B8-%D1%82%D0%BE%D1%87%D0%BA%D0%B0?type=design&node-id=2-2&t=1r8GOvfBGksf5gAp-1&scaling=scale-down&page-id=0%3A1&starting-point-node-id=2%3A52&mode=design)
 
 ![](assets/images/wireframe1.png)
 ![](assets/images/wireframe2.png)
@@ -21,7 +21,7 @@
 | 2 | Клиент выбирает категорию |![](assets/images/wf1.png)  |
 | 3 | Выполняется запрос GET /menu/default?view=dishes&cathegory=<cathegory_id> |  |
 | 4 | Клиент выбирает блюдо |![](assets/images/wf2.png)  |
-| 5 | Выполняется запрос GET /menu/default?view=dishes&dish=<dish_id> |  |
+| 5 | Выполняется запрос GET /menu/default?view=dishes&dish={dish_id} |  |
 | 6 | Клиент изменяет количество и нажимает кнопку “Оформить заказ”<br/>Альтернативный сценарий: клиент нажимает кнопку “Меню”, выполняется возврат на шаг 1 |![](assets/images/wf3.png) |
 | 7 | Выполняется запрос POST /orders |  |
 | 8 | Система проверяет наличие всех необходимых для выполнения заказа ингредиентов.<br/>Не для всех блюд зарезервированы ингредиенты. Система удаляет такие позиции из заказа и предлагает выбрать блюда взамен отсутствующих или продолжить без добавления блюд |![](assets/images/wf4.png) |
