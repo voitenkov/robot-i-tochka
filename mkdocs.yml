@@ -110,3 +110,6 @@ nav:
     - architecture.md
     - api.md
     - uiux.md
+  - Задачи:
+    - tasks/mvp.md
+    - tasks/release_v1.md
