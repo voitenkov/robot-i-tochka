@@ -4,6 +4,7 @@ on:
     branches:
       - master 
       - main
+      - test
 permissions:
   contents: write
 jobs:
@@ -25,5 +26,9 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
+      - run: pip install mkdocs-glightbox
+      - run: pip install mkdocs-swagger-ui-tag
+      - run: pip install mkdocs-build-plantuml-plugin
+      - run: pip install mkdocs-enumerate-headings-plugin
       - run: pip install mkdocs-material 
       - run: mkdocs gh-deploy --force

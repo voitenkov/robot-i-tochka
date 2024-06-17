@@ -1,0 +1,57 @@
+@startuml Create Order
+Title Интеграция с Яндекс Экспресс-доставкой
+autonumber
+' skinparam sequenceMessageAlign center
+actor "Клиент" as client
+box "Система управления рестораном" #LightBlue
+boundary "Mobile\n App" as app
+participant "API\nGateway" as api
+participant "Delivery\nService" as delivery
+database "Delivery\nDatabase" as db
+end box
+boundary "Яндекс\nЭкспресс-\nдоставка" as yandex
+
+==Создание заявки на доставку==
+client->app++: Нажимает кнопку\n Оформить доставку
+app->api++: POST \n/delivery/v1/deliveries/create \n{[dishes],get_from,send_to}
+api->delivery++: POST \n/deliveries/create\n{[dishes],get_from,send_to]}
+delivery->yandex++: POST \n/claims/create\n{[items],route_points,...}
+return OK 200\n{claim_id,status,...}
+delivery->db++: Записывает\ndelivery_id, claim_id и status
+return Done
+==Проверка заявки==
+delivery->yandex++: POST \n/claims/info?claim_id={string}
+return OK 200\n{claim_id,status,price,time}
+delivery->db++: Записывает срок и стоимость\n доставки для delivery_id
+return Done
+return OK 200\n{delivery_id,status,price,time}
+return OK 200\n{delivery_id,status,price,time}
+return Выводит срок\n и стоимость доставки
+==Подтверждение или отмена заявки==
+alt Условия доставки устраивают
+client->app++: Да, нажимает кнопку\nПодтвердить доставку
+app->api++: POST \n/delivery/v1/deliveries/accept?\ndelivery_id={string} 
+api->delivery++: POST \n/deliveries/accept?\ndelivery_id={string}
+delivery->yandex++: POST /claims/accept?claim_id={string}
+return OK 200\n{claim_id,status,...}
+delivery->db++: Обновляет claim_id и\nstatus для delivery_id
+return Done
+return OK 200\n{delivery_id,status,...}
+return OK 200\n{delivery_id,status,...}
+return Выводит сообщение,\nчто доставка подтверждена
+deactivate app
+else
+client->app++: Нет, нажимает кнопку\nОтменить доставку
+app->api++: POST \n/delivery/v1/deliveries/cancel?\ndelivery_id={string} 
+api->delivery++: POST\n/deliveries/cancel?\ndelivery_id={string}
+delivery->yandex++: POST /claims/cancel?claim_id={string}
+return OK 200
+delivery->db++: Удаляет delivery_id
+return Done
+return OK 200
+return OK 200
+return Выводит сообщение,\nчто доставка отменена
+deactivate app
+end
+
+@enduml
