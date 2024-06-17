@@ -244,6 +244,14 @@ paths:
       summary: Обновление заказа
       description: Обновляет заказ клиента.
       operationId: updateOrder
+      parameters:
+        - name: orderID
+          in: path
+          required: true
+          description: Уникальный идентификатор заказа
+          schema:
+            type: string
+            format: uuid     
       requestBody:
         required: true
         content:
