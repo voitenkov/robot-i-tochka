@@ -19,7 +19,7 @@
 | --- | --- | --- |
 | 1 | Выполняется запрос GET /menu/default?view=cathegory |  |
 | 2 | Клиент выбирает категорию |![](assets/images/wf1.png)  |
-| 3 | Выполняется запрос GET /menu/default?view=dishes&cathegory=<cathegory_id> |  |
+| 3 | Выполняется запрос GET /menu/default?view=dishes&cathegory={cathegory_id} |  |
 | 4 | Клиент выбирает блюдо |![](assets/images/wf2.png)  |
 | 5 | Выполняется запрос GET /menu/default?view=dishes&dish={dish_id} |  |
 | 6 | Клиент изменяет количество и нажимает кнопку “Оформить заказ”<br/>Альтернативный сценарий: клиент нажимает кнопку “Меню”, выполняется возврат на шаг 1 |![](assets/images/wf3.png) |
