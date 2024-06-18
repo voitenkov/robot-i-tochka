@@ -30,5 +30,5 @@
 ## Спецификация API
 
 Спецификация API в формате OpenAPI приведена ниже.
-<swagger-ui src= "https://raw.githubusercontent.com/voitenkov/robot-i-tochka/test/src/oas/orders-spec.yaml" />
+<swagger-ui src= "https://raw.githubusercontent.com/voitenkov/robot-i-tochka/main/src/oas/orders-spec.yaml" />
 
