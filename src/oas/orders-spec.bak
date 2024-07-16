@@ -541,15 +541,15 @@ paths:
           description: Пользователь не авторизован
         '500':
           description: Внутренняя ошибка сервера                   
-
+  
   /clients/{clientID}/bonuses:
-    post:
+    get:
       tags: 
         - Управление клиентами
       security:
         - bearerAuth: []
-      summary: Пересчет остатка бонусов клиента с учетом срока действия.
-      description: Возвращает остаток бонусов клиента с учетом срока действия.
+      summary: Получение остатка бонусов клиента
+      description: Возвращает остаток бонусов текущего клиента.
       parameters:
         - name: clientID
           in: path
@@ -559,14 +559,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Остаток бонусов клиента пересчитан
+        '200':
+          description: Остаток бонусов клиента
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/BonusesResponse'
         '400':
           description: Ошибка в запросе
         '401':
           description: Пользователь не авторизован
         '500':
-          description: Внутренняя ошибка сервера   
+          description: Внутренняя ошибка сервера     
+
 
   /payments:
     post:
@@ -994,6 +999,16 @@ components:
                 type: number
                 format: float
                 description: Цена блюда
+    BonusesResponse:
+      type: object
+      properties:
+        clientID:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор клиента
+        bonusesBalance:
+          type: integer
+          description: Использованные бонусы (>0 - начислить, <0 - списать)
 
 servers:
   # Added by API Auto Mocking Plugin
