@@ -91,11 +91,11 @@
 
 Отсутствуют
 
-## TASK-3 Заполнение параметров заказа
+## TASK-3 Check-out (проверка) заказа
 
 ### Use Case
 
-[UC-2 Заполнить параметры заказа](../requirements.md#use-case_3)
+[UC-2 Выполнить check-out (проверку) заказа](../requirements.md#use-case_3)
 
 ### Тест-кейсы
 
